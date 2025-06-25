@@ -1,0 +1,55 @@
+{% extends 'portfolio/base.html'%}
+{% load static %}
+
+
+{% block content %}
+    <div class="intro-section">
+    <h1>👋 Welcome to my portfolio</h1>
+    <p>Explore my full-stack web development projects and skills.</p>
+    <a href="{% static 'portfolio/patrick_resume.pdf' %}" download class="resume-btn">
+        📄 Download My Resume
+    </a>
+</div>
+
+
+<section class="about-section">
+<h2>About Me</h2>
+<p>
+    I'm a self-taught full-stack web developer with a deep drive for building real-world, functional applications. 
+    My journey began just a few months ago with Python and Django, and quickly evolved into full-stack development 
+    using React, Express, and PostgreSQL.
+</p>
+<p>
+    I thrive on turning raw ideas into usable tools — solving problems, debugging, and building things that actually work.
+    Right now, I'm focused on sharpening my skills, expanding my portfolio, and seeking junior developer or internship opportunities 
+    where I can grow in a collaborative team and ship impactful projects.
+</p>
+<p><a href="{% url 'contact' %}" class="contact-btn">📬 Contact Me</a></p>
+</section>
+
+<section class="projects-section">
+    <h2>Projects</h2>
+    <ul class="project-list">
+    {% for project in projects %}
+        <li>
+
+            <div class="project-card">
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.description }}</p>
+            {% if project.github_link %}
+                <a href="{{ project.github_link }}" target="_blank">GitHub</a>
+            {% endif %}
+            {% if project.live_demo %}
+                | <a href="{{ project.live_demo }}" target="_blank">Live Demo</a>
+            {% endif %}
+            {% if project.tech_stack %}
+                <p><strong>Tech Stack:</strong> {{ project.tech_stack }}</p>
+            {% endif %}
+            </div>
+        </li>
+    {% empty %}
+        <li>No projects added yet.</li>
+    {% endfor %}
+    </ul>
+</section>
+{% endblock %}

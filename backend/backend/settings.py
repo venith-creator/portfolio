@@ -26,10 +26,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&i$3i1l0cv3t&c&v@o5nux&dt$7vhc^&$i^4vx!w7j5(zdnzx!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+# ==================== SECURITY ====================
+# Tell Django to trust the X-Forwarded-Proto header from Railway's proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Ensure proper host/port detection behind Railway's proxy
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
+# Other recommended security settings for production
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+# ================== END SECURITY ==================
 
 # Application definition
 
@@ -82,9 +92,15 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=True,
+        engine='django.db.backends.postgresql',
+        options={
+            'sslmode': 'require',
+            'connect_timeout': 5
+        }
     )
 }
+
 
 
 # Password validation
@@ -167,3 +183,11 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
     DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
 
+# ==================== HTTPS SETTINGS ====================
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'

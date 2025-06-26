@@ -93,11 +93,6 @@ DATABASES = {
         default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
         ssl_require=True,
-        engine='django.db.backends.postgresql',
-        options={
-            'sslmode': 'require',
-            'connect_timeout': 5
-        }
     )
 }
 

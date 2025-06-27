@@ -22,7 +22,4 @@ from django.http import HttpResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('portfolio.urls')),
-    path('', views.home, name='home'),
-    path('contact/', views.contact_view, name='contact'),
-    path('', lambda request: HttpResponse("It works!")),
 ]

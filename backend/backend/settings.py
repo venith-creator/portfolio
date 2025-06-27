@@ -93,7 +93,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
-        ssl_require=True,
+        ssl_require=not DEBUG,
     )
 }
 
@@ -141,7 +141,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-ALLOWED_HOSTS = ['https://web-production-7cf3a.up.railway.app/']  # or use Railway's domain after deploy
+ALLOWED_HOSTS = ['web-production-7cf3a.up.railway.app',
+                 '.railway.app',
+                 '127.0.0.1',
+                 'localhost',]  # or use Railway's domain after deploy
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -163,9 +166,16 @@ LOGGING = {
     }
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-7cf3a.up.railway.app',
+    'https://*.railway.app',
+]
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'portfolio/static'),
+]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Use database from Railway

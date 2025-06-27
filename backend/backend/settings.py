@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 
+DEBUG = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,9 +37,9 @@ USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 
 # Other recommended security settings for production
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
 # ================== END SECURITY ==================
 
 # Application definition
@@ -96,7 +97,7 @@ DATABASES = {
     )
 }
 
-
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -139,11 +140,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import dj_database_url
 
-DEBUG = False
-
-ALLOWED_HOSTS = ['*']  # or use Railway's domain after deploy
+ALLOWED_HOSTS = ['https://web-production-7cf3a.up.railway.app/']  # or use Railway's domain after deploy
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

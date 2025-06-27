@@ -19,6 +19,7 @@ from django.urls import path, include
 from portfolio import views
 from django.http import HttpResponse
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('portfolio.urls')),
